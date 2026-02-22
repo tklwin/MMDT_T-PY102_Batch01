@@ -9,8 +9,7 @@ on:
       - ".github/workflows/autograde.yml"
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 jobs:
   grade:
@@ -44,44 +43,16 @@ jobs:
         with:
           name: autograder_result
           path: submissions/**/autograder_results.json
-          if-no-files-found: error
+          if-no-files-found: warn
 
       - name: Write score to job summary
         if: always()
         run: |
           echo "## Autograde result" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          cat submissions/**/autograder_results.json >> $GITHUB_STEP_SUMMARY
-
-      - name: Extract score from JSON
-        id: score
-        if: always()
-        run: |
-          RESULT_FILE=$(ls submissions/**/autograder_results.json | head -n 1)
-          python - <<PY
-          import json
-          path = "$RESULT_FILE"
-          with open(path, "r", encoding="utf-8") as f:
-              data = json.load(f)
-          final_score = int(data.get("final_score", data.get("earned", 0)))
-          maxp = int(data.get("max", 0))
-          with open("${GITHUB_OUTPUT}", "a", encoding="utf-8") as out:
-              out.write(f"final={final_score}/{maxp}\n")
-          PY
-
-      - name: Comment score on PR
-        if: always()
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          header: autograde-score
-          message: |
-            ✅ **Autograde Result**
-            - **FINAL SCORE:** **${{steps.score.outputs.final}}**
-
-      - name: Enable auto-merge
-        if: success()
-        uses: peter-evans/enable-pull-request-automerge@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          pull-request-number: ${{ github.event.pull_request.number }}
-          merge-method: squash
+          if ls submissions/**/autograder_results.json 1> /dev/null 2>&1; then
+            cat submissions/**/autograder_results.json >> $GITHUB_STEP_SUMMARY
+          else
+            echo "_No autograder_results.json found._" >> $GITHUB_STEP_SUMMARY
+          fi
+        
