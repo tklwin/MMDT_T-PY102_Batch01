@@ -18,6 +18,6 @@ def submission_check():
     Return your student ID as a string.
 
     Example:
-    "PY102001012"
+    "PY102001012 - Thein Kyaw Lwin"
     """
     return "PY102001012"
