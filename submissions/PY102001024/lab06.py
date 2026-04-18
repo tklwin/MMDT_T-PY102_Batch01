@@ -51,9 +51,26 @@ def helper_fun2_(arr, i):
 # ------------------------------------------------------------
 
 def schedule_next_job(jobs, new_job):
+    # TODO: insert job
+    # TODO: move it upward as needed (like heap behavior)
+    
     jobs.append(new_job)
-    updated_jobs = helper_fun1_(jobs, len(jobs) - 1)
-    return updated_jobs   
+
+    helper_fun1_(jobs, len(jobs)-1)
+    return jobs
+
+
+# jobs = [12, 29, 76, 31, 65, 80, 77]
+# new_job = 10
+# schedule_next_job(jobs,new_job)    
+
+# jobs = [12, 29, 76, 31, 65, 80, 77]
+# new_job = 29
+# schedule_next_job(jobs,new_job)    
+
+# jobs = [20]
+# new_job = 10
+# print(schedule_next_job(jobs,new_job))
 
 
 # ------------------------------------------------------------
@@ -79,14 +96,26 @@ def schedule_next_job(jobs, new_job):
 def process_next_job(arr):
     if len(arr) == 0:
         return None
-    highest_priority_job = arr[0]
-    last_item = arr.pop()
 
-    if len(arr) > 0:
-        arr[0] = last_item
-        helper_fun2_(arr,0)
-        return highest_priority_job, arr
+    # TODO: return removed job and updated list
 
+    arr.remove(arr[0])
+
+    if arr:
+        last = arr.pop()
+        arr.insert(0, last)
+
+        helper_fun2_(arr, 0)
+        
+    return arr
+
+# jobs =  [12]
+# jobs = [4,6,7,8,9,10,11]
+# jobs = [12, 29, 76, 31, 65, 80, 77, 90]
+# removed, updated = process_next_job(jobs)
+# process_next_job(jobs)      
+
+    
 # ------------------------------------------------------------
 # Q3 — personal priority reflection
 # ------------------------------------------------------------
@@ -111,17 +140,30 @@ def process_next_job(arr):
 
 def personal_priority_q():
     priorty_q = [
-        (4, "education"),
-        (3, "family"),
-        (1, "health"),
-        (5, "friends"),
-        (2, "money")
+        (10, "education"),
+        (2, "family"),
+        (6, "health"),
+        (4, "friends"),
+        (8, "money")
     ]
-    new_item = (2, "security")
+    # TODO: append new_item to personal_priorty_q
+    new_cate = (5, "security")
 
-    priorty_q.append(new_item)
+    # TODO: return the list 
+    # highest priority (lowest score) should be always top
 
-    for i in range(1, len(priorty_q)):
+    for i in range(len(priorty_q)):
         helper_fun1_(priorty_q, i)
 
+    priorty_q.append(new_cate)
+
+    helper_fun1_(priorty_q, len(priorty_q) - 1)
+
     return priorty_q
+
+
+
+# priorty_list = personal_priority_q()
+# print(priorty_list)
+# print(len(priorty_list))
+# print(all(isinstance(item, tuple) and len(item) == 2 for item in priorty_list))

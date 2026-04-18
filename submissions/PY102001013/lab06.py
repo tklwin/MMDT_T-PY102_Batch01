@@ -12,6 +12,7 @@ def helper_fun1_(arr, i):
 
     return arr
 
+
 def helper_fun2_(arr, i):
     n = len(arr)
 
@@ -29,6 +30,7 @@ def helper_fun2_(arr, i):
         else:
             break
     return arr
+
 
 # ------------------------------------------------------------
 # Q1 — schedule_next_job
@@ -50,10 +52,12 @@ def helper_fun2_(arr, i):
 # - Do NOT implement any additional helper functions.
 # ------------------------------------------------------------
 
+
 def schedule_next_job(jobs, new_job):
     jobs.append(new_job)
-    updated_jobs = helper_fun1_(jobs, len(jobs) - 1)
-    return updated_jobs   
+    i = len(jobs) - 1
+    helper_fun1_(jobs, i)
+    return jobs
 
 
 # ------------------------------------------------------------
@@ -76,16 +80,18 @@ def schedule_next_job(jobs, new_job):
 #
 # ------------------------------------------------------------
 
+
 def process_next_job(arr):
     if len(arr) == 0:
         return None
-    highest_priority_job = arr[0]
-    last_item = arr.pop()
 
-    if len(arr) > 0:
-        arr[0] = last_item
-        helper_fun2_(arr,0)
-        return highest_priority_job, arr
+    jobb = arr[0]
+    last_i = arr.pop()
+    if arr:
+        arr[0] = last_i
+        helper_fun2_(arr, 0)
+    return jobb
+
 
 # ------------------------------------------------------------
 # Q3 — personal priority reflection
@@ -109,19 +115,21 @@ def process_next_job(arr):
 # - Do NOT create additional helper functions.
 # ------------------------------------------------------------
 
+
 def personal_priority_q():
     priorty_q = [
-        (4, "education"),
+        (1, "education"),
         (3, "family"),
-        (1, "health"),
+        (2, "health"),
         (5, "friends"),
-        (2, "money")
+        (4, "money"),
     ]
-    new_item = (2, "security")
-
+    # TODO: append new_item to personal_priorty_q
+    new_item = (4, "security")
     priorty_q.append(new_item)
 
-    for i in range(1, len(priorty_q)):
-        helper_fun1_(priorty_q, i)
+    # TODO: return the list
+    # highest priority (lowest score) should be always top
+    priorty_q.sort()
 
     return priorty_q

@@ -12,6 +12,7 @@ def helper_fun1_(arr, i):
 
     return arr
 
+
 def helper_fun2_(arr, i):
     n = len(arr)
 
@@ -29,6 +30,7 @@ def helper_fun2_(arr, i):
         else:
             break
     return arr
+
 
 # ------------------------------------------------------------
 # Q1 — schedule_next_job
@@ -50,10 +52,14 @@ def helper_fun2_(arr, i):
 # - Do NOT implement any additional helper functions.
 # ------------------------------------------------------------
 
+
 def schedule_next_job(jobs, new_job):
+
     jobs.append(new_job)
-    updated_jobs = helper_fun1_(jobs, len(jobs) - 1)
-    return updated_jobs   
+
+    helper_fun1_(jobs, len(jobs) - 1)
+
+    return jobs
 
 
 # ------------------------------------------------------------
@@ -76,16 +82,21 @@ def schedule_next_job(jobs, new_job):
 #
 # ------------------------------------------------------------
 
+
 def process_next_job(arr):
     if len(arr) == 0:
         return None
-    highest_priority_job = arr[0]
-    last_item = arr.pop()
 
-    if len(arr) > 0:
-        arr[0] = last_item
-        helper_fun2_(arr,0)
-        return highest_priority_job, arr
+    if len(arr) == 1:
+        return arr.pop(), arr
+
+    top_job = arr[0]
+    arr[0] = arr.pop()
+
+    helper_fun2_(arr, 0)
+
+    return top_job, arr
+
 
 # ------------------------------------------------------------
 # Q3 — personal priority reflection
@@ -109,16 +120,17 @@ def process_next_job(arr):
 # - Do NOT create additional helper functions.
 # ------------------------------------------------------------
 
+
 def personal_priority_q():
     priorty_q = [
-        (4, "education"),
+        (7, "education"),
         (3, "family"),
-        (1, "health"),
-        (5, "friends"),
-        (2, "money")
+        (5, "health"),
+        (11, "friends"),
+        (9, "money"),
     ]
-    new_item = (2, "security")
 
+    new_item = (1, "security")
     priorty_q.append(new_item)
 
     for i in range(1, len(priorty_q)):

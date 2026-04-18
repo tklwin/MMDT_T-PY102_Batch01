@@ -51,9 +51,15 @@ def helper_fun2_(arr, i):
 # ------------------------------------------------------------
 
 def schedule_next_job(jobs, new_job):
+    # 1. Add the new job to the end of the list
     jobs.append(new_job)
+    
+    # 2. Use helper_fun1_ to move the job upward to maintain min-heap property
+    # We pass the index of the last element (len(jobs) - 1)
     updated_jobs = helper_fun1_(jobs, len(jobs) - 1)
-    return updated_jobs   
+    
+    return updated_jobs
+    pass
 
 
 # ------------------------------------------------------------
@@ -79,13 +85,21 @@ def schedule_next_job(jobs, new_job):
 def process_next_job(arr):
     if len(arr) == 0:
         return None
-    highest_priority_job = arr[0]
-    last_item = arr.pop()
 
+    # 1. The highest priority job (smallest value) is at the root (index 0)
+    root_job = arr[0]
+    
+    # 2. Move the last job to the root and remove the last element
+    last_job = arr.pop()
+    
     if len(arr) > 0:
-        arr[0] = last_item
-        helper_fun2_(arr,0)
-        return highest_priority_job, arr
+        arr[0] = last_job
+        # 3. Use helper_fun2_ to sink the new root down to its correct position
+        helper_fun2_(arr, 0)
+        
+    return root_job, arr
+
+    pass
 
 # ------------------------------------------------------------
 # Q3 — personal priority reflection
@@ -111,17 +125,27 @@ def process_next_job(arr):
 
 def personal_priority_q():
     priorty_q = [
-        (4, "education"),
-        (3, "family"),
-        (1, "health"),
-        (5, "friends"),
-        (2, "money")
+        (None, "education"),
+        (None, "family"),
+        (None, "health"),
+        (None, "friends"),
+        (None, "money")
     ]
-    new_item = (2, "security")
-
+    # # 1. Define the new category with a chosen weight
+    new_item = (3, "security")
+    
+    # 2. Append to list
     priorty_q.append(new_item)
+    
+    # 3. Reorganize the entire list into a valid min-heap structure
+    # We iterate backwards from the last non-leaf node to the root
+    n = len(priorty_q)
 
-    for i in range(1, len(priorty_q)):
-        helper_fun1_(priorty_q, i)
+    for i in range(n // 2 - 1, -1, -1):
+        helper_fun2_(priorty_q, i)
 
     return priorty_q
+
+    return None
+
+
